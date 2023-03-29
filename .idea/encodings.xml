@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/cadastr.json" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/card.json" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/data-6467-2023-03-14.json" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/etp.json" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/metro.json" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/ros.json" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/test.json" charset="windows-1251" />
+  </component>
+</project>
