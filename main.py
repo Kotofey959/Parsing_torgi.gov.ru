@@ -101,7 +101,7 @@ def parse_title_to_kwargs(title: str) -> Dict[str, Any]:
 
 def get_document_id(document: Dict[str, Any]) -> None or int:
     """
-    :param document: словарь с инфо о документах к лоту
+    :param document: словарь с информацией о документах к лоту
     :return: id нужного документа если он есть
     """
     for i in document.get('noticeAttachments'):
