@@ -6,6 +6,7 @@ import datetime as dt
 import re
 
 from etp import get_last_date
+from links import GetLink
 from pdf import get_rooms_floors
 from sheets import info_to_worksheet
 from metro import get_metro
@@ -36,16 +37,6 @@ headers = {
 }
 
 
-def get_api_url(page: int, size: int) -> str:
-    """
-    :param page: номер страницы
-    :param size: размер выдачи на странице
-    :return: Url
-    """
-    url = f"https://torgi.gov.ru/new/api/public/lotcards/search?dynSubjRF=78&biddType=178FZ&lotStatus=PUBLISHED,APPLICATIONS_SUBMISSION&catCode=9&byFirstVersion=true&withFacets=false&page={page}&size={size}&sort=updateDate,desc"
-    return url
-
-
 def get_total_elements(url: str) -> int:
     """
     :param url: url API общей выборки лотов
@@ -53,14 +44,6 @@ def get_total_elements(url: str) -> int:
     """
     response = requests.get(url, cookies=cookies, headers=headers).json()
     return response.get('totalElements')
-
-
-def get_element_link(element_id: int) -> str:
-    """
-    :param element_id: id лота
-    :return: ссылка на лот
-    """
-    return f'https://torgi.gov.ru/new/public/lots/lot/{element_id}/(lotInfo:info)?fromRec=false'
 
 
 def get_json(url: str) -> Dict[str, Any]:
@@ -76,11 +59,11 @@ def get_element_ids():
     """
     :return: список id всех лотов из выборки
     """
-    total_elements = int(get_total_elements(get_api_url(1, 10)))
+    total_elements = int(get_total_elements(GetLink().sample_link(1, 10)))
     total_pages = (total_elements // 10) + 1
     ids_list = []
     for i in range(1, total_pages + 1):
-        url = get_api_url(i, 10) if i != total_pages else get_api_url(i, total_elements % 10)
+        url = GetLink().sample_link(i, 10) if i != total_pages else GetLink().sample_link(i, total_elements % 10)
         response = get_json(url)
         for k in response.get('content'):
             ids_list.append(k.get('id'))
@@ -131,7 +114,7 @@ def get_info(obj_id, date1, date2):
     :param date2: дата конца периода
     :return: словарь со всей инофрмацией об объекте
     """
-    resp = requests.get(f"https://torgi.gov.ru/new/api/public/lotcards/{obj_id}").json()
+    resp = requests.get(GetLink().lot_link(obj_id)).json()
     obj = {
         'id': obj_id,
         'title': resp.get('lotName'),

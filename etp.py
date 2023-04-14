@@ -1,5 +1,7 @@
 import requests
 
+from links import GetLink
+
 cookies = {
     'etpsid': 'fce412fbe84e093ac5f99b2fcdbd743f',
     '20b6b357ea192383cb1244412247c5ea': 'dba5b9803f2dd18011e91516ba66fb6a',
@@ -48,7 +50,7 @@ def get_last_date(etp_link: str) -> str:
         'tid': 3,
         'token': '1aakEnWBd7QaUPmIvz9XAg',
     }
-    response = requests.post('https://178fz.roseltorg.ru/index.php', params=params, cookies=cookies, headers=headers,
+    response = requests.post(GetLink().etp_link, params=params, cookies=cookies, headers=headers,
                              json=json_data).json()
     return response.get('result').get('procedure').get('date_end_first_parts_review').split('T')[0]
 
