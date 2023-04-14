@@ -1,3 +1,5 @@
+from typing import Dict
+
 import requests
 
 cookies = {
@@ -17,7 +19,6 @@ headers = {
     'accept-language': 'ru,en;q=0.9',
     'api-token': 'd41d8cd98f00b204e',
     'content-type': 'application/json',
-    # 'cookie': 'utm_data=%7B%7D; _ym_uid=1679847441976221864; _ym_d=1679847441; _ym_isad=2; _ym_visorc=w; _ga=GA1.2.1736190133.1679847442; _gid=GA1.2.460986836.1679847442; _gat=1',
     'origin': 'https://ru.reestrgos.com',
     'referer': 'https://ru.reestrgos.com/object/77-09-0003002-3548',
     'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Yandex";v="23"',
@@ -30,7 +31,11 @@ headers = {
 }
 
 
-def get_floor_area(kdstr):
+def get_floor_area(kdstr) -> Dict or None:
+    """
+    :param kdstr: кадастровый номер
+    :return: словарь с этажом, площадью и координатами объекта
+    """
     json_data = {
         'number': str(kdstr),
     }

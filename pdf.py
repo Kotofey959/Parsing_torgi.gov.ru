@@ -2,7 +2,11 @@ import requests
 from PyPDF2 import PdfReader
 
 
-def get_rooms_floors(doc_id):
+def get_rooms_floors(doc_id: int):
+    """
+    :param doc_id: id документа
+    :return: словарь с этажом и количеством комнат объекта
+    """
     response = requests.get(f'https://torgi.gov.ru/new/file-store/v1/{doc_id}')
 
     with open('123.pdf', 'wb') as f:

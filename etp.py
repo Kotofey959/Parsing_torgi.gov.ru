@@ -10,7 +10,6 @@ headers = {
     'accept': '*/*',
     'accept-language': 'ru,en;q=0.9',
     'content-type': 'application/json',
-    # 'cookie': 'etpsid=fce412fbe84e093ac5f99b2fcdbd743f; 20b6b357ea192383cb1244412247c5ea=dba5b9803f2dd18011e91516ba66fb6a',
     'origin': 'https://178fz.roseltorg.ru',
     'referer': 'https://178fz.roseltorg.ru/',
     'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Yandex";v="23"',
@@ -30,7 +29,11 @@ params = {
 }
 
 
-def get_last_date(etp_link):
+def get_last_date(etp_link: str) -> str:
+    """
+    :param etp_link: ссылка на лот на ЭТП
+    :return str: дата рассмотрения заявок
+    """
     etp_id = etp_link.split('/')[-1]
     json_data = {
         'action': 'Procedure',
