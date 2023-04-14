@@ -2,7 +2,7 @@ from typing import Dict
 
 import requests
 
-from links import GetLink
+from links import cadastre_link
 
 cookies = {
     'utm_data': '%7B%7D',
@@ -41,7 +41,7 @@ def get_floor_area(kdstr) -> Dict or None:
     json_data = {
         'number': str(kdstr),
     }
-    response = requests.post(GetLink().cadastre_link, cookies=cookies, headers=headers,
+    response = requests.post(cadastre_link, cookies=cookies, headers=headers,
                              json=json_data).json()
     if response:
         return {'floor': response.get('response').get('data').get('common').get('floor'),

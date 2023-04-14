@@ -1,7 +1,7 @@
 import requests
 from PyPDF2 import PdfReader
 
-from links import GetLink
+from links import doc_link
 
 
 def get_rooms_floors(doc_id: int):
@@ -9,7 +9,7 @@ def get_rooms_floors(doc_id: int):
     :param doc_id: id документа
     :return: словарь с этажом и количеством комнат объекта
     """
-    response = requests.get(GetLink().doc_link(doc_id))
+    response = requests.get(doc_link(doc_id))
 
     with open('123.pdf', 'wb') as f:
         f.write(response.content)

@@ -6,7 +6,7 @@ import datetime as dt
 import re
 
 from etp import get_last_date
-from links import GetLink
+from links import sample_link, lot_link
 from pdf import get_rooms_floors
 from sheets import info_to_worksheet
 from metro import get_metro
@@ -59,11 +59,11 @@ def get_element_ids():
     """
     :return: список id всех лотов из выборки
     """
-    total_elements = int(get_total_elements(GetLink().sample_link(1, 10)))
+    total_elements = int(get_total_elements(sample_link(1, 10)))
     total_pages = (total_elements // 10) + 1
     ids_list = []
     for i in range(1, total_pages + 1):
-        url = GetLink().sample_link(i, 10) if i != total_pages else GetLink().sample_link(i, total_elements % 10)
+        url = sample_link(i, 10) if i != total_pages else sample_link(i, total_elements % 10)
         response = get_json(url)
         for k in response.get('content'):
             ids_list.append(k.get('id'))
@@ -114,7 +114,7 @@ def get_info(obj_id, date1, date2):
     :param date2: дата конца периода
     :return: словарь со всей инофрмацией об объекте
     """
-    resp = requests.get(GetLink().lot_link(obj_id)).json()
+    resp = requests.get(lot_link(obj_id)).json()
     obj = {
         'id': obj_id,
         'title': resp.get('lotName'),

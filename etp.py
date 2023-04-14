@@ -1,6 +1,6 @@
 import requests
 
-from links import GetLink
+from links import etp__link
 
 cookies = {
     'etpsid': 'fce412fbe84e093ac5f99b2fcdbd743f',
@@ -50,7 +50,7 @@ def get_last_date(etp_link: str) -> str:
         'tid': 3,
         'token': '1aakEnWBd7QaUPmIvz9XAg',
     }
-    response = requests.post(GetLink().etp_link, params=params, cookies=cookies, headers=headers,
+    response = requests.post(etp__link, params=params, cookies=cookies, headers=headers,
                              json=json_data).json()
     return response.get('result').get('procedure').get('date_end_first_parts_review').split('T')[0]
 
