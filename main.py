@@ -142,7 +142,6 @@ def get_info(obj_id, date1, date2):
             obj['floor'] = floor_area.get('floor')
             obj['area'] = floor_area.get('area')
             obj['coords'] = floor_area.get('coords')
-            print(obj.get('coords'))
             if obj.get('coords'):
                 obj['metro'] = get_metro(obj.get('coords'))
         key_words = get_key_words(resp)
@@ -152,7 +151,7 @@ def get_info(obj_id, date1, date2):
             if rooms_floors:
                 obj['rooms'] = rooms_floors.get('rooms')
                 obj['floors'] = rooms_floors.get('floors')
-        obj['last_date'] = get_last_date(resp.get('etpUrl'))
+        obj['last_date'] = get_last_date(obj_id.split("_")[0])
         return obj
 
 
@@ -178,4 +177,4 @@ if __name__ == '__main__':
                    \   / 
                     \ /       
     '''
-    main('20.02.2023', '26.02.2023')
+    main('18.04.2023', '30.04.2023')

@@ -12,3 +12,5 @@ def sample_link(page, size):
 
 def lot_link(lot_id):
     return f"https://torgi.gov.ru/new/api/public/lotcards/{lot_id}"
+
+

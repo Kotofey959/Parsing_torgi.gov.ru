@@ -1,56 +1,38 @@
 import requests
 
-from links import etp__link
 
-cookies = {
-    'etpsid': 'fce412fbe84e093ac5f99b2fcdbd743f',
-    '20b6b357ea192383cb1244412247c5ea': 'dba5b9803f2dd18011e91516ba66fb6a',
-}
-
-headers = {
-    'authority': '178fz.roseltorg.ru',
-    'accept': '*/*',
-    'accept-language': 'ru,en;q=0.9',
-    'content-type': 'application/json',
-    'origin': 'https://178fz.roseltorg.ru',
-    'referer': 'https://178fz.roseltorg.ru/',
-    'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Yandex";v="23"',
-    'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"Windows"',
-    'sec-fetch-dest': 'empty',
-    'sec-fetch-mode': 'cors',
-    'sec-fetch-site': 'same-origin',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 YaBrowser/23.3.0.2246 Yowser/2.5 Safari/537.36',
-    'x-requested-with': 'XMLHttpRequest',
-}
-
-params = {
-    'rpctype': 'direct',
-    'module': 'default',
-    'action': 'Procedure.load',
-}
-
-
-def get_last_date(etp_link: str) -> str:
+def get_last_date(obj_id: str) -> str:
     """
-    :param etp_link: ссылка на лот на ЭТП
+    :param obj_id: id объекта
     :return str: дата рассмотрения заявок
     """
-    etp_id = etp_link.split('/')[-1]
-    json_data = {
-        'action': 'Procedure',
-        'method': 'load',
-        'data': [
-            {
-                'procedure_id': etp_id,
-                'is_view': 1,
-            },
-        ],
-        'type': 'rpc',
-        'tid': 3,
-        'token': '1aakEnWBd7QaUPmIvz9XAg',
+    cookies = {
+        '_ym_uid': '1679826671768036242',
+        '_ym_d': '1679826671',
+        '_ym_isad': '2',
+        'SESSION': 'ZjdmYzllZDEtYmE0Ni00NzU4LTkwZDMtOGYzZGI5MDA5MjNj',
+        '_ym_visorc': 'w',
     }
-    response = requests.post(etp__link, params=params, cookies=cookies, headers=headers,
-                             json=json_data).json()
-    return response.get('result').get('procedure').get('date_end_first_parts_review').split('T')[0]
 
+    headers = {
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'ru,en;q=0.9',
+        'Connection': 'keep-alive',
+        'Sec-Fetch-Dest': 'empty',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Site': 'same-origin',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 YaBrowser/23.3.3.719 Yowser/2.5 Safari/537.36',
+        'branchId': 'null',
+        'organizationId': 'null',
+        'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "YaBrowser";v="23"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'traceparent': '00-75d3cbe9cc829af7b502c3e905fedef5-a20f477a0f3e9d1d-01',
+    }
+
+    response = requests.get(
+        f'https://torgi.gov.ru/new/api/public/notices/noticeNumber/{obj_id}',
+        cookies=cookies,
+        headers=headers,
+    ).json()
+    return response.get('biddReviewDate').split('T')[0]
