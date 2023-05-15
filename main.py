@@ -5,12 +5,15 @@ import requests
 import datetime as dt
 import re
 
-from etp import get_last_date
-from links import sample_link, lot_link
+from etp import get_review_date
+from links import get_sample_link, get_lot_link, get_izv_link
 from pdf import get_rooms_floors
 from sheets import info_to_worksheet
 from metro import get_metro
 from kdstr import get_floor_area
+
+START_PERIOD_DATE = "01.04.2023"
+END_PERIOD_DATE = "15.04.2023"
 
 cookies = {
     'SESSION': 'MDlhZDlhOTctMmE3Mi00YTM1LWI3ZTYtYTAwMzViMGM0ZTJj',
@@ -37,7 +40,7 @@ headers = {
 }
 
 
-def get_total_elements(url: str) -> int:
+def get_count_elements(url: str) -> int:
     """
     :param url: url API общей выборки лотов
     :return: количество элементов в выборке
@@ -59,11 +62,11 @@ def get_element_ids():
     """
     :return: список id всех лотов из выборки
     """
-    total_elements = int(get_total_elements(sample_link(1, 10)))
-    total_pages = (total_elements // 10) + 1
+    count_elements = get_count_elements(get_sample_link(1, 10))
+    total_pages = (count_elements // 10) + 1
     ids_list = []
     for i in range(1, total_pages + 1):
-        url = sample_link(i, 10) if i != total_pages else sample_link(i, total_elements % 10)
+        url = get_sample_link(i, 10) if i != total_pages else get_sample_link(i, count_elements % 10)
         response = get_json(url)
         for k in response.get('content'):
             ids_list.append(k.get('id'))
@@ -114,7 +117,7 @@ def get_info(obj_id, date1, date2):
     :param date2: дата конца периода
     :return: словарь со всей инофрмацией об объекте
     """
-    resp = requests.get(lot_link(obj_id)).json()
+    resp = requests.get(get_lot_link(obj_id)).json()
     obj = {
         'id': obj_id,
         'title': resp.get('lotName'),
@@ -125,7 +128,7 @@ def get_info(obj_id, date1, date2):
         'biddStartTime': resp.get('biddStartTime').split('T')[0],
         'biddEndTime': resp.get('biddEndTime').split('T')[0],
         'documents': [i.get('fileName') for i in resp.get('noticeAttachments')],
-        'izv_link': f'https://torgi.gov.ru/new/public/notices/view/{obj_id.split("_")[0]}',
+        'izv_link': get_izv_link(obj_id),
         'doc_id': get_document_id(resp)
     }
     d_obj = dt.datetime.strptime(obj.get("biddStartTime"), '%Y-%m-%d')
@@ -151,7 +154,7 @@ def get_info(obj_id, date1, date2):
             if rooms_floors:
                 obj['rooms'] = rooms_floors.get('rooms')
                 obj['floors'] = rooms_floors.get('floors')
-        obj['last_date'] = get_last_date(obj_id.split("_")[0])
+        obj['last_date'] = get_review_date(obj_id.split("_")[0])
         return obj
 
 
@@ -172,9 +175,7 @@ def main(date1, date2):
 
 if __name__ == '__main__':
     '''
-    Здесь указать даты по которым отбираем лоты
-                  \     /
-                   \   / 
-                    \ /       
+    Запуск основной функции
+         
     '''
-    main('18.04.2023', '30.04.2023')
+    main(START_PERIOD_DATE, END_PERIOD_DATE)

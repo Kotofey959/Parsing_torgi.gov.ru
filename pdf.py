@@ -1,7 +1,7 @@
 import requests
 from PyPDF2 import PdfReader
 
-from links import doc_link
+from links import get_doc_link
 
 
 def get_rooms_floors(doc_id: int):
@@ -9,25 +9,26 @@ def get_rooms_floors(doc_id: int):
     :param doc_id: id документа
     :return: словарь с этажом и количеством комнат объекта
     """
-    response = requests.get(doc_link(doc_id))
+    url = get_doc_link(doc_id)
+    response = requests.get(url)
 
-    with open('123.pdf', 'wb') as f:
+    with open('document.pdf', 'wb') as f:
         f.write(response.content)
-    with open('123.pdf', 'rb') as f:
+    with open('document.pdf', 'rb') as f:
         rooms_floors = {}
         pdf = PdfReader(f)
         for i in range(len(pdf.pages)):
             page = pdf.pages[i]
             text = page.extract_text()
-            rooms = text.find('Количество комнат')
-            floors = text.find('этажном')
-            if rooms:
-                rooms_floors['rooms'] = text[rooms:rooms + 22]
-            if floors:
+            rooms_index = text.find('Количество комнат')
+            floors_index = text.find('этажном')
+            if rooms_index:
+                rooms_floors['rooms'] = text[rooms_index:rooms_index + 22]
+            if floors_index:
                 buf = ''
-                for k in text[floors - 20:floors]:
-                    if k in '123456789':
-                        buf += k
+                for symbol in text[floors_index - 20:floors_index]:
+                    if symbol.isnumeric():
+                        buf += symbol
                 rooms_floors['floors'] = buf
             if rooms_floors.get('rooms') and rooms_floors.get('floors'):
                 return rooms_floors

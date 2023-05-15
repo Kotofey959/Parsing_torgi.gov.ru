@@ -2,7 +2,7 @@ from typing import Dict
 
 import requests
 
-from links import cadastre_link
+from links import cadastral_link
 
 cookies = {
     'utm_data': '%7B%7D',
@@ -33,15 +33,15 @@ headers = {
 }
 
 
-def get_floor_area(kdstr) -> Dict or None:
+def get_floor_area(cadastral_number) -> Dict or None:
     """
-    :param kdstr: кадастровый номер
+    :param cadastral_number: кадастровый номер
     :return: словарь с этажом, площадью и координатами объекта
     """
     json_data = {
-        'number': str(kdstr),
+        'number': str(cadastral_number),
     }
-    response = requests.post(cadastre_link, cookies=cookies, headers=headers,
+    response = requests.post(cadastral_link, cookies=cookies, headers=headers,
                              json=json_data).json()
     if response:
         return {'floor': response.get('response').get('data').get('common').get('floor'),
