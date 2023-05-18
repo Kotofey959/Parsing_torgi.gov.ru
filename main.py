@@ -12,8 +12,8 @@ from sheets import info_to_worksheet
 from metro import get_metro
 from kdstr import get_floor_area
 
-START_PERIOD_DATE = "01.04.2023"
-END_PERIOD_DATE = "15.04.2023"
+START_PERIOD_DATE = "01.05.2023"
+END_PERIOD_DATE = "14.05.2023"
 
 cookies = {
     'SESSION': 'MDlhZDlhOTctMmE3Mi00YTM1LWI3ZTYtYTAwMzViMGM0ZTJj',

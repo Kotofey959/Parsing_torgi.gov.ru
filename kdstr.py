@@ -5,14 +5,13 @@ import requests
 from links import cadastral_link
 
 cookies = {
-    'utm_data': '%7B%7D',
     '_ym_uid': '1679847441976221864',
     '_ym_d': '1679847441',
+    '_ga': 'GA1.2.1736190133.1679847442',
+    'utm_data': '%7B%7D',
+    '_gid': 'GA1.2.1872901457.1684398671',
     '_ym_isad': '2',
     '_ym_visorc': 'w',
-    '_ga': 'GA1.2.1736190133.1679847442',
-    '_gid': 'GA1.2.460986836.1679847442',
-    '_gat': '1',
 }
 
 headers = {
@@ -22,14 +21,13 @@ headers = {
     'api-token': 'd41d8cd98f00b204e',
     'content-type': 'application/json',
     'origin': 'https://ru.reestrgos.com',
-    'referer': 'https://ru.reestrgos.com/object/77-09-0003002-3548',
-    'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Yandex";v="23"',
+    'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "YaBrowser";v="23"',
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"Windows"',
     'sec-fetch-dest': 'empty',
     'sec-fetch-mode': 'cors',
     'sec-fetch-site': 'same-origin',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 YaBrowser/23.3.0.2246 Yowser/2.5 Safari/537.36',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 YaBrowser/23.3.4.594 Yowser/2.5 Safari/537.36',
 }
 
 

@@ -49,7 +49,7 @@ def info_to_worksheet(objects: List[Dict], date1: str, date2: str) -> None:
                 str(obj.get("deposit")).replace(".", ","),
                 str(obj.get("price_step")).replace(".", ","),
                 '0',
-                f'=S{count}*0,13',
+                f'=(S{count}-M{count})*0,13',
                 '0',
                 f'=S{count}-T{count}-U{count}-M{count}',
                 '-',
