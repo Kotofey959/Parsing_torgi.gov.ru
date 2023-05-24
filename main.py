@@ -8,35 +8,30 @@ import re
 from etp import get_review_date
 from links import get_sample_link, get_lot_link, get_izv_link
 from pdf import get_rooms_floors
+from renovation import check_coords
 from sheets import info_to_worksheet
 from metro import get_metro
 from kdstr import get_floor_area
 
-START_PERIOD_DATE = "01.05.2023"
-END_PERIOD_DATE = "14.05.2023"
+START_PERIOD_DATE = "01.04.2023"
+END_PERIOD_DATE = "24.05.2023"
 
-cookies = {
-    'SESSION': 'MDlhZDlhOTctMmE3Mi00YTM1LWI3ZTYtYTAwMzViMGM0ZTJj',
-    '_ym_uid': '1679826671768036242',
-    '_ym_d': '1679826671',
-    '_ym_isad': '2',
-    '_ym_visorc': 'w',
-}
 
 headers = {
     'Accept': 'application/json, text/plain, */*',
     'Accept-Language': 'ru,en;q=0.9',
     'Connection': 'keep-alive',
+    'Referer': 'https://torgi.gov.ru/new/public/lots/reg',
     'Sec-Fetch-Dest': 'empty',
     'Sec-Fetch-Mode': 'cors',
     'Sec-Fetch-Site': 'same-origin',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 YaBrowser/23.3.0.2246 Yowser/2.5 Safari/537.36',
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 YaBrowser/23.3.4.594 Yowser/2.5 Safari/537.36',
     'branchId': 'null',
     'organizationId': 'null',
-    'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "Yandex";v="23"',
+    'sec-ch-ua': '"Chromium";v="110", "Not A(Brand";v="24", "YaBrowser";v="23"',
     'sec-ch-ua-mobile': '?0',
     'sec-ch-ua-platform': '"Windows"',
-    'traceparent': '00-62e95e8741fd54dd64859c48cbb23b74-4f77a890b6c3dae1-01',
+    'traceparent': '00-d1477b4660ffc94b8608089fee707264-20685b2d0d8662c8-01',
 }
 
 
@@ -45,7 +40,7 @@ def get_count_elements(url: str) -> int:
     :param url: url API общей выборки лотов
     :return: количество элементов в выборке
     """
-    response = requests.get(url, cookies=cookies, headers=headers).json()
+    response = requests.get(url, headers=headers).json()
     return response.get('totalElements')
 
 
@@ -54,7 +49,7 @@ def get_json(url: str) -> Dict[str, Any]:
     :param url: API url выборки лотов
     :return: json с выборкой лотов
     """
-    response = requests.get(url, cookies=cookies, headers=headers).json()
+    response = requests.get(url, headers=headers).json()
     return response
 
 
@@ -155,6 +150,7 @@ def get_info(obj_id, date1, date2):
                 obj['rooms'] = rooms_floors.get('rooms')
                 obj['floors'] = rooms_floors.get('floors')
         obj['last_date'] = get_review_date(obj_id.split("_")[0])
+        obj['renovation'] = check_coords(obj.get('coords'))
         return obj
 
 

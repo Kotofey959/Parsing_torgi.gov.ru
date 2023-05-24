@@ -4,16 +4,6 @@ import requests
 
 from links import cadastral_link
 
-cookies = {
-    '_ym_uid': '1679847441976221864',
-    '_ym_d': '1679847441',
-    '_ga': 'GA1.2.1736190133.1679847442',
-    'utm_data': '%7B%7D',
-    '_gid': 'GA1.2.1872901457.1684398671',
-    '_ym_isad': '2',
-    '_ym_visorc': 'w',
-}
-
 headers = {
     'authority': 'ru.reestrgos.com',
     'accept': 'application/json, text/plain, */*',
@@ -39,7 +29,7 @@ def get_floor_area(cadastral_number) -> Dict or None:
     json_data = {
         'number': str(cadastral_number),
     }
-    response = requests.post(cadastral_link, cookies=cookies, headers=headers,
+    response = requests.post(cadastral_link, headers=headers,
                              json=json_data).json()
     if response:
         return {'floor': response.get('response').get('data').get('common').get('floor'),
