@@ -26,13 +26,23 @@ def get_floor_area(cadastral_number) -> Dict or None:
     :param cadastral_number: кадастровый номер
     :return: словарь с этажом, площадью и координатами объекта
     """
+    cadastral_number = to_valid_cadastral_number(cadastral_number)
     json_data = {
-        'number': str(cadastral_number),
+        'number': cadastral_number,
     }
     response = requests.post(cadastral_link, headers=headers,
                              json=json_data).json()
+
     if response:
         return {'floor': response.get('response').get('data').get('common').get('floor'),
                 'area': response.get('response').get('data').get('common').get('area'),
                 'coords': f"{response.get('response').get('data').get('fias').get('geo_lat')}:{response.get('response').get('data').get('fias').get('geo_lon')}"
                 }
+
+
+def to_valid_cadastral_number(cadastral_number):
+    cadastral_number = str(cadastral_number)
+    if cadastral_number.startswith("7:"):
+        new_cadastral = cadastral_number.replace("7:", "77:", 1)
+        return new_cadastral
+    return cadastral_number

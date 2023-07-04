@@ -13,8 +13,8 @@ from sheets import info_to_worksheet
 from metro import get_metro
 from kdstr import get_floor_area
 
-START_PERIOD_DATE = "01.04.2023"
-END_PERIOD_DATE = "24.05.2023"
+START_PERIOD_DATE = "26.06.2023"
+END_PERIOD_DATE = "02.07.2023"
 
 
 headers = {
@@ -75,7 +75,7 @@ def parse_title_to_kwargs(title: str) -> Dict[str, Any]:
     """
     kwargs = {
         'address': title[title.find('по адресу:'):title.find(' общей площадью')].split('по адресу:')[1].strip(','),
-        'kdstr': re.search(r'\d{2}:\d{2}:\d{7,9}:\d{2,6}', title).group()
+        'kdstr': re.search(r'\d{1,2}:\d{2}:\d{7,9}:\d{2,6}', title).group()
     }
     return kwargs
 
